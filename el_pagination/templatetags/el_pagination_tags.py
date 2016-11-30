@@ -304,7 +304,7 @@ class PaginateNode(template.Node):
                 default_number, paginator.page_range)
 
         # The current request is used to get the requested page number.
-        if django.get_version() >= (1, 10):
+        if hasattr(context, 'request'):
             request = context.request
         else:
             request = context['request']
