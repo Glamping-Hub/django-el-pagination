@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 import re
 
+import django
 from django import template
 from django.utils.encoding import iri_to_uri
 
@@ -303,8 +304,12 @@ class PaginateNode(template.Node):
                 default_number, paginator.page_range)
 
         # The current request is used to get the requested page number.
+        if django.get_version() >= (1, 10):
+            request = context.request
+        else:
+            request = context['request']
         page_number = utils.get_page_number_from_request(
-            context['request'], querystring_key, default=default_number)
+            request, querystring_key, default=default_number)
 
         # Get the page.
         try:
